@@ -6,7 +6,7 @@ class FinanceDataLoader:
         self.fixtures_path = fixtures_path
         #loadind data
     def load_all_data(self):
-        """Load all data from Excel file"""
+      
         excel_path = os.path.join(self.fixtures_path, 'data.xlsx')
         
         data = {}
@@ -18,7 +18,7 @@ class FinanceDataLoader:
         return data
     
     def print_data_summary(self, data):
-        """Print summary of loaded data"""
+        
         for name, df in data.items():
             print(f"\n{name.upper()}:")
             print(f"  Shape: {df.shape}")
