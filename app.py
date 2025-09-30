@@ -4,7 +4,9 @@ from agent.tools import FinanceTools
 from agent.planner import QueryPlanner
 import plotly.graph_objects as go
 import plotly.express as px
-
+from agent.pdf_generator import PDFReportGenerator
+import os
+from datetime import datetime
 
 st.set_page_config(page_title="CFO Copilot", page_icon="💼", layout="wide")
 
@@ -22,6 +24,26 @@ planner = QueryPlanner()
 
 st.title("💼 CFO Copilot")
 st.markdown("Ask questions about your financial performance")
+
+col1, col2 = st.columns([6, 1])
+with col2:
+    if st.button("📄 Export PDF"):
+        pdf_gen = PDFReportGenerator(tools)
+        pdf_filename = f"cfo_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
+        pdf_gen.generate_report(pdf_filename, month='2025-06')
+        
+        # Provide download button
+        with open(pdf_filename, "rb") as pdf_file:
+            st.download_button(
+                label="⬇️ Download Report",
+                data=pdf_file,
+                file_name=pdf_filename,
+                mime="application/pdf"
+            )
+        
+        # Clean up
+        if os.path.exists(pdf_filename):
+            os.remove(pdf_filename)
 
 # Chat interface
 user_question = st.text_input("Ask a question:")
